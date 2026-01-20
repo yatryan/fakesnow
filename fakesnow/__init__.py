@@ -94,11 +94,13 @@ def patch(
 
 
 @contextmanager
-def server(host: str | None = None, port: int | None = None, session_parameters: dict[str, str | int | bool] | None = None) -> Iterator[dict]:
+def server(
+    host: str | None = None, port: int | None = None, session_parameters: dict[str, str | int | bool] | None = None
+) -> Iterator[dict]:
     """Start a fake snowflake server in a separate thread and yield connection kwargs.
 
     Args:
-        host (str | None, optional): Host to run the server on. If None, 127.0.0.1 is used. Defaults to None.
+        host (str | None, optional): Host to bind server to. If None, 127.0.0.1 is used. Defaults to None.
         port (int | None, optional): Port to run the server on. If None, an available port is chosen. Defaults to None.
 
     Yields:

@@ -105,6 +105,7 @@ fakesnow -s
 ```
 
 By default the server listens on a random available port. Use `-p` to specify a port.
+By default the server listens to request from `127.0.0.1`.  Use `-h` to specify a host.
 
 #### Within your python program
 
@@ -125,6 +126,13 @@ with fakesnow.server() as conn_kwargs:
 This starts an HTTP server in its own thread listening for requests on a random available port.
 
 ##### Server Configuration Options
+
+To specify a host to listen on for the server:
+
+```python
+with fakesnow.server(host="0.0.0.0") as conn_kwargs:
+    ...
+```
 
 To specify a port for the server:
 

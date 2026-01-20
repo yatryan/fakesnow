@@ -29,6 +29,14 @@ def arg_parser() -> argparse.ArgumentParser:
         default=argparse.SUPPRESS,
         help="Port to run the HTTP server on (default: random available port)",
     )
+    parser.add_argument(
+        "-h",
+        "--host",
+        type=str,
+        # suppress default so we can customise how it appears in the help message
+        default=argparse.SUPPRESS,
+        help="Host for the HTTP server to listen to (default: 127.0.0.1)",
+    )
     parser.add_argument("path", type=str, nargs="?", help="target path")
     parser.add_argument("targs", nargs="*", help="target args")
     return parser

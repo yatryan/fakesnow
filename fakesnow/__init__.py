@@ -94,10 +94,11 @@ def patch(
 
 
 @contextmanager
-def server(port: int | None = None, session_parameters: dict[str, str | int | bool] | None = None) -> Iterator[dict]:
+def server(host: str | None = None, port: int | None = None, session_parameters: dict[str, str | int | bool] | None = None) -> Iterator[dict]:
     """Start a fake snowflake server in a separate thread and yield connection kwargs.
 
     Args:
+        host (str | None, optional): Host to run the server on. If None, 127.0.0.1 is used. Defaults to None.
         port (int | None, optional): Port to run the server on. If None, an available port is chosen. Defaults to None.
 
     Yields:
@@ -111,6 +112,9 @@ def server(port: int | None = None, session_parameters: dict[str, str | int | bo
 
     import fakesnow.server
 
+    if not host:
+        host = "127.0.0.1"
+
     # find an unused TCP port between 1024-65535
     if not port:
         with contextlib.closing(socket.socket(type=socket.SOCK_STREAM)) as sock:
@@ -118,7 +122,7 @@ def server(port: int | None = None, session_parameters: dict[str, str | int | bo
             port = sock.getsockname()[1]
 
     assert port
-    server = uvicorn.Server(uvicorn.Config(fakesnow.server.app, port=port, log_level="info"))
+    server = uvicorn.Server(uvicorn.Config(fakesnow.server.app, host=host, port=port, log_level="info"))
     thread = threading.Thread(target=server.run, name="fakesnow server", daemon=True)
     thread.start()
 
@@ -133,7 +137,7 @@ def server(port: int | None = None, session_parameters: dict[str, str | int | bo
             user="fake",
             password="snow",
             account="fakesnow",
-            host="127.0.0.1",
+            host=host,
             port=port,
             protocol="http",
             # disable telemetry

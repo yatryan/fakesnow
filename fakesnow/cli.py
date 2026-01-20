@@ -78,7 +78,7 @@ def main(args: Sequence[str] = sys.argv[1:]) -> int:
         signal.signal(signal.SIGINT, signal_handler)
 
         try:
-            with fakesnow.server(port=getattr(pargs, "port", None)):
+            with fakesnow.server(port=getattr(pargs, "port", None),host=getattr(pargs, "host", None)):
                 # wait for SIGINT
                 stop.wait()
         except RuntimeError:
